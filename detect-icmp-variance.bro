@@ -14,10 +14,19 @@ export {
 	const icmp_variance_threshold = 1.0 &redef;
 }
 
-event connection_state_remove(c: connection) 
+event icmp_sent(c: connection, icmp: icmp_conn)
 	{
-	if ( c$conn$proto == icmp )
-		SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=c$conn$orig_bytes]);
+	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=icmp$len]);
+	}
+
+event icmp_echo_request(c: connection, icmp: icmp_conn, id: count, seq: count, payload: string)
+	{
+	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=|payload|]);
+	}
+
+event icmp_echo_reply(c: connection, icmp: icmp_conn, id: count, seq: count, payload: string)
+	{
+	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=|payload|]);
 	}
 
 event bro_init()
