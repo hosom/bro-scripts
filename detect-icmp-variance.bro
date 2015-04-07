@@ -29,6 +29,56 @@ event icmp_echo_reply(c: connection, icmp: icmp_conn, id: count, seq: count, pay
 	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=|payload|]);
 	}
 
+event icmp_error_message(c: connection, icmp: icmp_conn, code: count, context: icmp_context)
+	{
+	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=icmp$len]);
+	}
+
+event icmp_neighbor_advertisement(c: connection, icmp: icmp_conn, router: bool, solicited: bool, override: bool, tgt: addr, options: icmp6_nd_options)
+	{
+	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=icmp$len]);
+	}
+
+event icmp_neighbor_solicitation(c: connection, icmp: icmp_conn, tgt: addr, options: icmp6_nd_options)
+	{
+	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=icmp$len]);
+	}
+
+event icmp_packet_too_big(c: connection, icmp: icmp_conn, code: count, context: icmp_context)
+	{
+	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=icmp$len]);
+	}
+
+event icmp_parameter_problem(c: connection, icmp: icmp_conn, code: count, context: icmp_context)
+	{
+	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=icmp$len]);
+	}
+
+event icmp_redirect(c: connection, icmp: icmp_conn, tgt: addr, dest: addr, options: icmp6_nd_options)
+	{
+	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=icmp$len]);
+	}
+
+event icmp_router_advertisement(c: connection, icmp: icmp_conn, cur_hop_limit: count, managed: bool, other: bool, home_agent: bool, pref: count, proxy: bool, rsv: count, router_lifetime: interval, reachable_time: interval, retrans_timer: interval, options: icmp6_nd_options)
+	{
+	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=icmp$len]);
+	}
+
+event icmp_router_solicitation(c: connection, icmp: icmp_conn, options: icmp6_nd_options)
+	{
+	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=icmp$len]);
+	}
+
+event icmp_time_exceeded(c: connection, icmp: icmp_conn, code: count, context: icmp_context)
+	{
+	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=icmp$len]);
+	}
+
+event icmp_unreachable(c: connection, icmp: icmp_conn, code: count, context: icmp_context)
+	{
+	SumStats::observe("icmp.shell.variance", [$host=c$id$orig_h], [$num=icmp$len]);
+	}
+
 event bro_init()
 	{
 	local r1 = SumStats::Reducer($stream="icmp.shell.variance",
