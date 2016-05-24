@@ -25,26 +25,25 @@ export {
 
 event PDF::dynamic_content_found(f: fa_file, data: string)
     {
-        if ( logging )
-            {
-            local rec: PDF::Info = [$ts=network_time(), $fuid=f$id, $data=data];
-            Log::write(PDF::LOG, rec);
-            }
+    if ( logging )
+        {
+        local rec: PDF::Info = [$ts=network_time(), $fuid=f$id, $data=data];
+        Log::write(PDF::LOG, rec);
+        }
     }
 
 event pdf_data(f: fa_file, data: string)
     {
-        if ( dynamic_content_pattern in data )
-            {
-            event PDF::dynamic_content_found(f, data);
-            }
+    if ( dynamic_content_pattern in data )
+        {
+        event PDF::dynamic_content_found(f, data);
+        }
     }
 
-event file_new(f: fa_file)
+event file_sniff(f: fa_file, meta: fa_metadata)
     {
-    if ( f?$mime_type && f$mime_type == "application/pdf")
-        Files::add_analyzer(f, Files::ANALYZER_DATA_EVENT,
-                            [$stream_event=pdf_data]);
+    if ( meta?$mime_type &&  meta$mime_type == "application/pdf")
+        Files::add_analyzer(f, Files::ANALYZER_DATA_EVENT, [$stream_event=pdf_data]);
     }
 
 event bro_init() &priority=5
